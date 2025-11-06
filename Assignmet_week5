@@ -1,0 +1,55 @@
+def add_racer(racers, lap_times, new_racer, new_time):
+    racers.append(new_racer)
+    lap_times.append(new_time)
+def disqualify_racer(racers, lap_times, racer_to_disqualify):
+    for i in range(len(racers)):
+        if racers[i] == racer_to_disqualify:
+            racers.pop(i) 
+            lap_times.pop(i)
+            return True
+    return False        
+def get_fastest_laps(racers, lap_times, count):
+    names = []
+    times = []
+
+    for i in range(len(racers)):
+        names.append(racers[i])
+        times.append(lap_times[i])
+
+    fastest_racers = []
+    for i in range(count):
+        if len(times) == 0:
+            break  
+        min_index = 0
+        min_time = times[0]
+        for j in range(1, len(times)):
+            if times[j] < min_time:
+                min_time = times[j]
+                min_index = j
+        fastest_racers.append(names[min_index])
+        names.pop(min_index)
+        times.pop(min_index)
+
+    return fastest_racers
+def manage_race_results(initial_racers, initial_times, new_racer_data, racer_to_disqualify, top_count):
+    racers = []
+    times = []
+    for i in range(len(initial_racers)):
+        racers.append(initial_racers[i])
+    for i in range(len(initial_times)):
+        times.append(initial_times[i])
+    add_racer(racers, times, new_racer_data[0], new_racer_data[1])
+    disqualify_racer(racers, times, racer_to_disqualify)
+    fastest = get_fastest_laps(racers, times, top_count)
+    return racers, fastest
+
+racers = ["Axel", "Blaze", "Cruz", "Dash", "Echo"]
+times = [95.42, 94.88, 96.10, 95.90, 94.99]
+new_racer = ["Fang", 94.50]
+disqualify_name = "Dash"
+count = 3
+
+final_racers, fastest = manage_race_results(racers, times, new_racer, disqualify_name, count)
+
+print("Final racers:", final_racers)
+print("Fastest list:", fastest)
